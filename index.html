@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng ký tham gia</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      border-radius: 1rem;
+    }
+    .btn-primary {
+      background: #6a11cb;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #2575fc;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card shadow-lg p-5 col-md-8 mx-auto">
+    <h2 class="text-center mb-4 text-primary">Form Tham Gia Tiết Mục Văn Nghệ 2025</h2>
+    <form id="registerForm" class="row g-4">
+      <div class="col-md-6">
+        <label class="form-label">Họ tên</label>
+        <input type="text" id="hoten" class="form-control" placeholder="Nhập họ tên" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Số điện thoại</label>
+        <input type="text" id="sodienthoai" class="form-control" placeholder="VD: 098xxxxxxx" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">MSSV</label>
+        <input type="text" id="mssv" class="form-control" placeholder="Nhập MSSV" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Thời gian dự thi (phút)</label>
+        <input type="number" id="thoigianduthi" class="form-control" min="1" placeholder="VD: 5" required>
+      </div>
+      <div class="col-md-12">
+        <label class="form-label">Khung giờ</label>
+        <select id="khunggio" class="form-select" required>
+          <option value="">-- Chọn khung giờ --</option>
+          <option>17h-17h30</option>
+          <option>17h30-18h</option>
+          <option>18h-18h30</option>
+          <option>18h30-19h</option>
+          <option>19h-19h30</option>
+        </select>
+      </div>
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary px-5 py-2 fs-5">Đăng ký</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const API_URL = "https://68d3b294214be68f8c66d81b.mockapi.io/danhsach";
+
+// Hàm chỉ lấy dữ liệu
+async function getData() {
+  const res = await fetch(API_URL);
+  return await res.json();
+}
+
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const hoten = document.getElementById("hoten").value.trim();
+  const sodienthoai = document.getElementById("sodienthoai").value.trim();
+  const mssv = document.getElementById("mssv").value.trim();
+  const thoigianduthi = document.getElementById("thoigianduthi").value;
+  const khunggio = document.getElementById("khunggio").value;
+
+  const data = await getData();
+
+  // Kiểm tra MSSV trùng
+  if (data.some(item => item.mssv === mssv)) {
+    alert("❌ MSSV đã tồn tại!");
+    return;
+  }
+
+  // Kiểm tra khung giờ đủ 10 người
+  const count = data.filter(item => item.khunggio === khunggio).length;
+  if (count >= 10) {
+    alert("❌ Khung giờ này đã đủ 10 người!");
+    return;
+  }
+
+  // Gửi dữ liệu
+  await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ hoten, sodienthoai, mssv, thoigianduthi, khunggio })
+  });
+
+  alert("✅ Đăng ký thành công!");
+  e.target.reset();
+});
+</script>
+
+</body>
+</html>
