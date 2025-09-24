@@ -93,6 +93,19 @@
           <button type="submit" class="btn-primary text-white font-semibold py-2 px-6 rounded-md">Đăng ký</button>
         </div>
       </form>
+        <!-- Thêm sau form -->
+        <div id="thongke" class="mt-6 p-4 bg-purple-50 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-purple-600 mb-3">Thống kê số lượng sinh viên</h3>
+          <table class="w-full text-center border-collapse">
+            <thead>
+              <tr class="bg-purple-100 text-purple-700">
+                <th class="border p-2">Khung giờ</th>
+                <th class="border p-2">Số lượng</th>
+              </tr>
+            </thead>
+            <tbody id="thongkeBody"></tbody>
+          </table>
+        </div>
 
         <div class="footer">
         <p>Liên hệ: <a href="https://tienminhtran.github.io/profile/" target="_blank">Tiến Minh Trần</a></p>
@@ -158,7 +171,7 @@
             text: 'Đăng ký thành công!',
             confirmButtonColor: '#6a11cb'
           }).then(() => {
-            window.location.reload(); // Reload trang sau khi đăng ký thành công
+            return ;
           });
         } else {
           throw new Error('Đăng ký thất bại');
@@ -173,5 +186,138 @@
       }
     });
   </script>
+
+  <script>
+  const KHUNG_GIO_LIST = [
+    "17h-17h30",
+    "17h30-18h",
+    "18h-18h30",
+    "18h30-19h",
+    "19h-19h30"
+  ];
+
+  async function getData() {
+    const res = await fetch(API_URL);
+    return await res.json();
+  }
+
+  // Render thống kê số lượng
+  function renderThongKe(counts) {
+    const tbody = document.getElementById("thongkeBody");
+    tbody.innerHTML = "";
+
+    KHUNG_GIO_LIST.forEach(kg => {
+      const soLuong = counts[kg] || 0;
+      const row = `
+        <tr>
+          <td class="border p-2">${kg}</td>
+          <td class="border p-2 ${soLuong >= 8 ? 'text-red-500 font-bold' : ''}">
+            ${soLuong}/8
+          </td>
+        </tr>
+      `;
+      tbody.innerHTML += row;
+    });
+  }
+
+  // Cập nhật trạng thái khung giờ + thống kê
+  async function updateKhungGioStatus() {
+    const data = await getData();
+    const khunggioSelect = document.getElementById("khunggio");
+
+    // Reset style trước
+    [...khunggioSelect.options].forEach(opt => {
+      opt.style.textDecoration = "none";
+      opt.style.color = "black";
+      opt.disabled = false;
+    });
+
+    // Đếm số lượng theo khung giờ
+    const counts = {};
+    data.forEach(item => {
+      counts[item.khunggio] = (counts[item.khunggio] || 0) + 1;
+    });
+
+    // Nếu khung giờ >= 8 thì gạch ngang + disable
+    [...khunggioSelect.options].forEach(opt => {
+      if (counts[opt.value] >= 8) {
+        opt.style.textDecoration = "line-through";
+        opt.style.color = "gray";
+        opt.disabled = true;
+      }
+    });
+
+    // Render thống kê
+    renderThongKe(counts);
+  }
+
+  document.addEventListener("DOMContentLoaded", updateKhungGioStatus);
+
+  document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const hoten = document.getElementById("hoten").value.trim();
+    const sodienthoai = document.getElementById("sodienthoai").value.trim();
+    const mssv = document.getElementById("mssv").value.trim();
+    const thoigianduthi = document.getElementById("thoigianduthi").value;
+    const khunggio = document.getElementById("khunggio").value;
+
+    const data = await getData();
+
+    // Kiểm tra MSSV trùng
+    if (data.some(item => item.mssv === mssv)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'MSSV đã tồn tại!',
+        confirmButtonColor: '#6a11cb'
+      });
+      return;
+    }
+
+    // Kiểm tra khung giờ đủ 8
+    const count = data.filter(item => item.khunggio === khunggio).length;
+    if (count >= 8) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Khung giờ này đã đủ 8 người!',
+        confirmButtonColor: '#6a11cb'
+      });
+      updateKhungGioStatus();
+      return;
+    }
+
+    // Gửi dữ liệu
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hoten, sodienthoai, mssv, thoigianduthi, khunggio })
+      });
+
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công',
+          text: 'Đăng ký thành công!',
+          confirmButtonColor: '#6a11cb'
+        }).then(() => {
+          updateKhungGioStatus(); // cập nhật lại sau khi thêm
+        });
+      } else {
+        throw new Error('Đăng ký thất bại');
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Đã có lỗi xảy ra, vui lòng thử lại!',
+        confirmButtonColor: '#6a11cb'
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
