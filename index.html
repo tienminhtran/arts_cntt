@@ -297,13 +297,19 @@
       });
 
       if (response.ok) {
+        const registerBtn = document.querySelector("#registerForm button[type='submit']");
+        // Ẩn nút đăng ký
+        registerBtn.style.display = "none";
+
         Swal.fire({
           icon: 'success',
           title: 'Thành công',
           text: 'Đăng ký thành công!',
-          confirmButtonColor: '#6a11cb'
+          timer: 1000,           // tự tắt sau 3 giây
+          showConfirmButton: false, // không hiển thị nút OK
+          timerProgressBar: true
         }).then(() => {
-          updateKhungGioStatus(); // cập nhật lại sau khi thêm
+          updateKhungGioStatus(); // cập nhật khung giờ và thống kê
         });
       } else {
         throw new Error('Đăng ký thất bại');
