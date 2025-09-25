@@ -1,1 +1,234 @@
-[{"hoten":"Nguyễn Quang Khải","sodienthoai":"0855370246","thoigianduthi":"5","khunggio":"17h30-18h","mssv":"22710571","id":"1"},{"hoten":"Hồng Quý","sodienthoai":"0799701603","thoigianduthi":"5","khunggio":"17h-17h30","mssv":"25663211","id":"3"},{"hoten":"Nguyễn Gia Bảo","sodienthoai":"0369209707","thoigianduthi":"5","khunggio":"19h-19h30","mssv":"25633641","id":"4"},{"hoten":"Hoàng Huỳnh Châu","sodienthoai":"0908417082","thoigianduthi":"6","khunggio":"17h-17h30","mssv":"24665041","id":"5"},{"hoten":"Võ Nguyễn Thùy An","sodienthoai":"0868754473","thoigianduthi":"5","khunggio":"17h-17h30","mssv":"25713901","id":"6"},{"hoten":"Quách Kim Anh","sodienthoai":"0918807710","thoigianduthi":"5","khunggio":"18h-18h30","mssv":"24657701","id":"7"},{"hoten":"Hồ Thị Thu Linh","sodienthoai":"0382688907","thoigianduthi":"6","khunggio":"18h-18h30","mssv":"23663211","id":"8"},{"hoten":"Nguyễn Thị Quỳnh Trang","sodienthoai":"0834294286","thoigianduthi":"5","khunggio":"17h-17h30","mssv":"23676071","id":"9"},{"hoten":"Đinh Thuỳ Trang","sodienthoai":"0798310057","thoigianduthi":"5","khunggio":"17h30-18h","mssv":"24630861","id":"10"},{"hoten":"Hà Thế Kiệt","sodienthoai":"0337504539","thoigianduthi":"5","khunggio":"18h-18h30","mssv":"22633791","id":"12"},{"hoten":"Ngô Duy Thông","sodienthoai":"0786800626","thoigianduthi":"5","khunggio":"18h-18h30","mssv":"22640421","id":"13"},{"hoten":"Vũ Đức Tuấn Anh","sodienthoai":"0333711297","thoigianduthi":"5","khunggio":"17h30-18h","mssv":"25651361","id":"14"},{"hoten":"Nguyễn Trí Toàn","sodienthoai":"0327377857","thoigianduthi":"5","khunggio":"17h-17h30","mssv":"25660951","id":"15"},{"hoten":"Phạm Đăng Quỳnh Trâm","sodienthoai":"0903596914","thoigianduthi":"5","khunggio":"17h30-18h","mssv":"24666181","id":"16"},{"hoten":"Cao Nguyễn Hào","sodienthoai":"0945087606","thoigianduthi":"5","khunggio":"17h-17h30","mssv":"25692101","id":"17"},{"hoten":"Trần Hoài Ân","sodienthoai":"0342889117","thoigianduthi":"7","khunggio":"18h-18h30","mssv":"25728381","id":"18"},{"hoten":"Hoàng Hạnh Nhi","sodienthoai":"0949804347","thoigianduthi":"5","khunggio":"19h-19h30","mssv":"21067131","id":"19"},{"hoten":"Đào Nguyễn Ngọc Hằng","sodienthoai":"0914781656","thoigianduthi":"4","khunggio":"17h-17h30","mssv":"25755781","id":"20"},{"hoten":"Hồ Phương Thảo","sodienthoai":"0972303220","thoigianduthi":"5","khunggio":"18h30-19h","mssv":"25656481","id":"21"},{"hoten":"Nguyễn Thị Thùy Trang","sodienthoai":"0362134127","thoigianduthi":"5","khunggio":"17h-17h30","mssv":"25719911","id":"22"},{"hoten":"Đặng Thị Kim Dung","sodienthoai":"0862980973","thoigianduthi":"4","khunggio":"18h-18h30","mssv":"25682391","id":"23"},{"hoten":"Lâm Tiến Đạt","sodienthoai":"0379806775","thoigianduthi":"5","khunggio":"19h-19h30","mssv":"25702361","id":"24"},{"hoten":"Vũ Tuấn Kiệt","sodienthoai":"0386292242","thoigianduthi":"4","khunggio":"17h30-18h","mssv":"22658781","id":"25"},{"hoten":"Lê Đức Anh Tuấn","sodienthoai":"0968909774","thoigianduthi":"5","khunggio":"18h-18h30","mssv":"22705161","id":"27"},{"hoten":"Phạm Thị Kim Ngân","sodienthoai":"0816350320","thoigianduthi":"6","khunggio":"19h-19h30","mssv":"24688951","id":"28"},{"hoten":"Lê Phan Khánh Vy","sodienthoai":"0397806401","thoigianduthi":"6","khunggio":"18h30-19h","mssv":"25723351","id":"29"}]
+[
+  {
+    "hoten": "Nguyễn Quang Khải",
+    "sodienthoai": "0855370246",
+    "thoigianduthi": "5",
+    "khunggio": "17h30-18h",
+    "mssv": "22710571",
+    "id": "1"
+  },
+  {
+    "hoten": "Hồng Quý",
+    "sodienthoai": "0799701603",
+    "thoigianduthi": "5",
+    "khunggio": "17h-17h30",
+    "mssv": "25663211",
+    "id": "3"
+  },
+  {
+    "hoten": "Nguyễn Gia Bảo",
+    "sodienthoai": "0369209707",
+    "thoigianduthi": "5",
+    "khunggio": "19h-19h30",
+    "mssv": "25633641",
+    "id": "4"
+  },
+  {
+    "hoten": "Hoàng Huỳnh Châu",
+    "sodienthoai": "0908417082",
+    "thoigianduthi": "6",
+    "khunggio": "17h-17h30",
+    "mssv": "24665041",
+    "id": "5"
+  },
+  {
+    "hoten": "Võ Nguyễn Thùy An",
+    "sodienthoai": "0868754473",
+    "thoigianduthi": "5",
+    "khunggio": "17h-17h30",
+    "mssv": "25713901",
+    "id": "6"
+  },
+  {
+    "hoten": "Quách Kim Anh",
+    "sodienthoai": "0918807710",
+    "thoigianduthi": "5",
+    "khunggio": "18h-18h30",
+    "mssv": "24657701",
+    "id": "7"
+  },
+  {
+    "hoten": "Hồ Thị Thu Linh",
+    "sodienthoai": "0382688907",
+    "thoigianduthi": "6",
+    "khunggio": "18h-18h30",
+    "mssv": "23663211",
+    "id": "8"
+  },
+  {
+    "hoten": "Nguyễn Thị Quỳnh Trang",
+    "sodienthoai": "0834294286",
+    "thoigianduthi": "5",
+    "khunggio": "17h-17h30",
+    "mssv": "23676071",
+    "id": "9"
+  },
+  {
+    "hoten": "Đinh Thuỳ Trang",
+    "sodienthoai": "0798310057",
+    "thoigianduthi": "5",
+    "khunggio": "17h30-18h",
+    "mssv": "24630861",
+    "id": "10"
+  },
+  {
+    "hoten": "Hà Thế Kiệt",
+    "sodienthoai": "0337504539",
+    "thoigianduthi": "5",
+    "khunggio": "18h-18h30",
+    "mssv": "22633791",
+    "id": "12"
+  },
+  {
+    "hoten": "Ngô Duy Thông",
+    "sodienthoai": "0786800626",
+    "thoigianduthi": "5",
+    "khunggio": "18h-18h30",
+    "mssv": "22640421",
+    "id": "13"
+  },
+  {
+    "hoten": "Vũ Đức Tuấn Anh",
+    "sodienthoai": "0333711297",
+    "thoigianduthi": "5",
+    "khunggio": "17h30-18h",
+    "mssv": "25651361",
+    "id": "14"
+  },
+  {
+    "hoten": "Nguyễn Trí Toàn",
+    "sodienthoai": "0327377857",
+    "thoigianduthi": "5",
+    "khunggio": "17h-17h30",
+    "mssv": "25660951",
+    "id": "15"
+  },
+  {
+    "hoten": "Phạm Đăng Quỳnh Trâm",
+    "sodienthoai": "0903596914",
+    "thoigianduthi": "5",
+    "khunggio": "17h30-18h",
+    "mssv": "24666181",
+    "id": "16"
+  },
+  {
+    "hoten": "Cao Nguyễn Hào",
+    "sodienthoai": "0945087606",
+    "thoigianduthi": "5",
+    "khunggio": "17h-17h30",
+    "mssv": "25692101",
+    "id": "17"
+  },
+  {
+    "hoten": "Trần Hoài Ân",
+    "sodienthoai": "0342889117",
+    "thoigianduthi": "7",
+    "khunggio": "18h-18h30",
+    "mssv": "25728381",
+    "id": "18"
+  },
+  {
+    "hoten": "Hoàng Hạnh Nhi",
+    "sodienthoai": "0949804347",
+    "thoigianduthi": "5",
+    "khunggio": "19h-19h30",
+    "mssv": "21067131",
+    "id": "19"
+  },
+  {
+    "hoten": "Đào Nguyễn Ngọc Hằng",
+    "sodienthoai": "0914781656",
+    "thoigianduthi": "4",
+    "khunggio": "17h-17h30",
+    "mssv": "25755781",
+    "id": "20"
+  },
+  {
+    "hoten": "Hồ Phương Thảo",
+    "sodienthoai": "0972303220",
+    "thoigianduthi": "5",
+    "khunggio": "18h30-19h",
+    "mssv": "25656481",
+    "id": "21"
+  },
+  {
+    "hoten": "Nguyễn Thị Thùy Trang",
+    "sodienthoai": "0362134127",
+    "thoigianduthi": "5",
+    "khunggio": "17h-17h30",
+    "mssv": "25719911",
+    "id": "22"
+  },
+  {
+    "hoten": "Đặng Thị Kim Dung",
+    "sodienthoai": "0862980973",
+    "thoigianduthi": "4",
+    "khunggio": "18h-18h30",
+    "mssv": "25682391",
+    "id": "23"
+  },
+  {
+    "hoten": "Lâm Tiến Đạt",
+    "sodienthoai": "0379806775",
+    "thoigianduthi": "5",
+    "khunggio": "19h-19h30",
+    "mssv": "25702361",
+    "id": "24"
+  },
+  {
+    "hoten": "Vũ Tuấn Kiệt",
+    "sodienthoai": "0386292242",
+    "thoigianduthi": "4",
+    "khunggio": "17h30-18h",
+    "mssv": "22658781",
+    "id": "25"
+  },
+  {
+    "hoten": "Lê Đức Anh Tuấn",
+    "sodienthoai": "0968909774",
+    "thoigianduthi": "5",
+    "khunggio": "18h-18h30",
+    "mssv": "22705161",
+    "id": "27"
+  },
+  {
+    "hoten": "Phạm Thị Kim Ngân",
+    "sodienthoai": "0816350320",
+    "thoigianduthi": "6",
+    "khunggio": "19h-19h30",
+    "mssv": "24688951",
+    "id": "28"
+  },
+  {
+    "hoten": "Lê Phan Khánh Vy",
+    "sodienthoai": "0397806401",
+    "thoigianduthi": "6",
+    "khunggio": "18h30-19h",
+    "mssv": "25723351",
+    "id": "29"
+  },
+  {
+    "hoten": "Nguyễn Đình Phi",
+    "sodienthoai": "0383687150",
+    "thoigianduthi": "5",
+    "khunggio": "18h30-19h",
+    "mssv": "23633271",
+    "id": "30"
+  },
+  {
+    "hoten": "Nguyễn Trọng Nhân",
+    "sodienthoai": "0815758797",
+    "thoigianduthi": "5",
+    "khunggio": "17h30-18h",
+    "mssv": "25633451",
+    "id": "31"
+  },
+  {
+    "hoten": "Lê Khánh Linh",
+    "sodienthoai": "0776712725",
+    "thoigianduthi": "5",
+    "khunggio": "18h-18h30",
+    "mssv": "25687401",
+    "id": "32"
+  }
+]
