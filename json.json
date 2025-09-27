@@ -230,5 +230,85 @@
     "khunggio": "18h-18h30",
     "mssv": "25687401",
     "id": "32"
+  },
+  {
+    "hoten": "Nguyễn Công Minh",
+    "sodienthoai": "0906883268",
+    "thoigianduthi": "5",
+    "khunggio": "17h30-18h",
+    "mssv": "25751771",
+    "id": "33"
+  },
+  {
+    "hoten": "Huỳnh Bảo Anh",
+    "sodienthoai": "0762998728",
+    "thoigianduthi": "4",
+    "khunggio": "18h30-19h",
+    "mssv": "25754911",
+    "id": "34"
+  },
+  {
+    "hoten": "Nguyễn Thị Thùy Linh",
+    "sodienthoai": "0377030621",
+    "thoigianduthi": "3",
+    "khunggio": "18h30-19h",
+    "mssv": "25705531",
+    "id": "35"
+  },
+  {
+    "hoten": "Hoàng Minh Ngọc",
+    "sodienthoai": "0963803592",
+    "thoigianduthi": "5",
+    "khunggio": "17h30-18h",
+    "mssv": "25734081",
+    "id": "36"
+  },
+  {
+    "hoten": "Phạm Ngọc Hương",
+    "sodienthoai": "0947675322",
+    "thoigianduthi": "5",
+    "khunggio": "19h-19h30",
+    "mssv": "23652291",
+    "id": "37"
+  },
+  {
+    "hoten": "Nguyen Van Hung (Sc Nguyen Duy Tai-Nguyen Quang Khai)",
+    "sodienthoai": "0879282989",
+    "thoigianduthi": "5",
+    "khunggio": "18h30-19h",
+    "mssv": "22666271",
+    "id": "39"
+  },
+  {
+    "hoten": "Lương Trung Nguyên",
+    "sodienthoai": "0867422931",
+    "thoigianduthi": "7",
+    "khunggio": "18h30-19h",
+    "mssv": "23713321",
+    "id": "40"
+  },
+  {
+    "hoten": "Phạm Thị Như Quỳnh",
+    "sodienthoai": "0973308249",
+    "thoigianduthi": "6",
+    "khunggio": "19h-19h30",
+    "mssv": "25696561",
+    "id": "42"
+  },
+  {
+    "hoten": "Trương Văn Bình",
+    "sodienthoai": "0329102304",
+    "thoigianduthi": "3",
+    "khunggio": "19h-19h30",
+    "mssv": "23693741",
+    "id": "43"
+  },
+  {
+    "hoten": "Trang Thanh Thanh",
+    "sodienthoai": "0819167036",
+    "thoigianduthi": "5",
+    "khunggio": "18h30-19h",
+    "mssv": "25638901",
+    "id": "44"
   }
 ]
