@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cập nhật Tiết Mục</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .btn-primary {
+      background: #6a11cb;
+      transition: background 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #2575fc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mx-auto px-4">
+    <div class="card">
+      <h2 class="text-2xl font-bold text-center mb-6 text-purple-600">Cập nhật Tiết Mục Văn Nghệ</h2>
+
+      <!-- Form nhập MSSV -->
+      <form id="searchForm" class="space-y-4 mb-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Nhập MSSV</label>
+          <input type="text" id="searchMSSV" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm" placeholder="Nhập MSSV để tìm">
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn-primary text-white font-semibold py-2 px-6 rounded-md">Tìm</button>
+        </div>
+      </form>
+
+      <!-- Form update ẩn -->
+      <form id="updateForm" class="space-y-4 hidden">
+        <input type="hidden" id="updateId">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Họ tên</label>
+          <input type="text" id="hoten" disabled class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm bg-gray-100">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">MSSV</label>
+          <input type="text" id="mssv" disabled class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm bg-gray-100">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Tên tiết mục</label>
+          <input type="text" id="tentietmuc" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Tên thí sinh diễn cùng</label>
+          <input type="text" id="tenthisinhdiencung" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn-primary text-white font-semibold py-2 px-6 rounded-md">Cập nhật</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const API_URL = "https://68d3b294214be68f8c66d81b.mockapi.io/danhsach";
+    const searchForm = document.getElementById("searchForm");
+    const updateForm = document.getElementById("updateForm");
+
+    // Tìm theo MSSV
+    searchForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const mssv = document.getElementById("searchMSSV").value.trim();
+
+      if (!mssv) {
+        Swal.fire({icon:"warning", title:"Nhập MSSV!", text:"Vui lòng nhập MSSV trước khi tìm."});
+        return;
+      }
+
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        const sinhvien = data.find(item => item.mssv === mssv);
+
+        if (!sinhvien) {
+          Swal.fire({icon:"error", title:"Không tìm thấy", text:"MSSV không tồn tại!"});
+          updateForm.classList.add("hidden");
+        } else {
+          // Hiện form update với dữ liệu
+          document.getElementById("updateId").value = sinhvien.id;
+          document.getElementById("hoten").value = sinhvien.hoten;
+          document.getElementById("mssv").value = sinhvien.mssv;
+          document.getElementById("tentietmuc").value = sinhvien.tentietmuc || "";
+          document.getElementById("tenthisinhdiencung").value = sinhvien.tenthisinhdiencung || "";
+          updateForm.classList.remove("hidden");
+        }
+      } catch (err) {
+        Swal.fire({icon:"error", title:"Lỗi", text:"Không thể tải dữ liệu!"});
+      }
+    });
+
+    // Cập nhật
+    updateForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("updateId").value;
+      const tentietmuc = document.getElementById("tentietmuc").value.trim();
+      const tenthisin = document.getElementById("tenthisinhdiencung").value.trim();
+
+      try {
+        const res = await fetch(`${API_URL}/${id}`, {
+          method: "PUT",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ tentietmuc, tenthisinhdiencung: tenthisin })
+        });
+
+        if (res.ok) {
+          Swal.fire({icon:"success", title:"Cập nhật thành công!", timer:1200, showConfirmButton:false});
+          updateForm.classList.add("hidden");
+          searchForm.reset();
+        } else {
+          throw new Error("Lỗi cập nhật");
+        }
+      } catch (err) {
+        Swal.fire({icon:"error", title:"Thất bại", text:"Không thể cập nhật!"});
+      }
+    });
+  </script>
+</body>
+</html>

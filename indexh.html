@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký tham gia</title>
+  <link rel="icon" type="image/x-icon" href="/logo.jpg">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+            margin: 0 auto; /* Căn giữa card */
+
+    }
+    .btn-primary {
+      background: #6a11cb;
+      transition: background 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #2575fc;
+    }
+        .event-date {
+      color: #6a11cb;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.125rem; /* 18px, tương ứng với text-lg trong Tailwind */
+    }
+        .footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: #6a11cb;
+      font-size: 0.875rem;
+    }
+    .footer a {
+      color: #2575fc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mx-auto px-4">
+    <div class="card">
+      
+      <h2 class="text-2xl md:text-3xl font-bold text-center mb-6 text-purple-600">Form Tham Gia Tiết Mục Văn Nghệ 2025</h2>
+      <p class="event-date">Ngày sơ khảo: 03/10/2025</p>
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Họ tên</label>
+          <input type="text" id="hoten" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="Nhập họ tên" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Số điện thoại</label>
+          <input type="text" id="sodienthoai" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="VD: 098xxxxxxx" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">MSSV</label>
+          <input type="text" id="mssv" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" placeholder="Nhập MSSV" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Thời gian dự thi (phút)</label>
+          <input type="number" id="thoigianduthi" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" min="1" placeholder="VD: 5" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Khung giờ</label>
+          <select id="khunggio" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500" required>
+            <option value="">-- Chọn khung giờ --</option>
+            <option>17h-17h30</option>
+            <option>17h30-18h</option>
+            <option>18h-18h30</option>
+            <option>18h30-19h</option>
+            <option>19h-19h30</option>
+            <option>19h30-20h</option>
+            <option>20h-20h30</option>
+          </select>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn-primary text-white font-semibold py-2 px-6 rounded-md">Đăng ký</button>
+        </div>
+      </form>
+        <!-- Thêm sau form -->
+        <!-- <div id="thongke" class="mt-6 p-4 bg-purple-50 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-purple-600 mb-3">Thống kê số lượng sinh viên</h3>
+          <table class="w-full text-center border-collapse">
+            <thead>
+              <tr class="bg-purple-100 text-purple-700">
+                <th class="border p-2">Khung giờ</th>
+                <th class="border p-2">Số lượng</th>
+              </tr>
+            </thead>
+            <tbody id="thongkeBody"></tbody>
+          </table>
+        </div> -->
+
+        <div class="footer">
+        <p>Liên hệ: <a href="https://tienminhtran.github.io/profile/" target="_blank">Tiến Minh Trần</a></p>
+        <!-- <a href="./QUJDIDIxMDEwNjExRW5jb2RlIHRvIEJhc2U2NCBmb3JtYXQK.html">@NOcOPY</a> -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const API_URL = "https://68d3b294214be68f8c66d81b.mockapi.io/danhsach";
+
+    async function getData() {
+      const res = await fetch(API_URL);
+      return await res.json();
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const hoten = document.getElementById("hoten").value.trim();
+      const sodienthoai = document.getElementById("sodienthoai").value.trim();
+      const mssv = document.getElementById("mssv").value.trim();
+      const thoigianduthi = document.getElementById("thoigianduthi").value;
+      const khunggio = document.getElementById("khunggio").value;
+
+      const data = await getData();
+
+      // Kiểm tra MSSV trùng
+      if (data.some(item => item.mssv === mssv)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'MSSV đã tồn tại!',
+          confirmButtonColor: '#6a11cb'
+        });
+        return;
+      }
+
+      // Kiểm tra khung giờ đủ 10 người
+      const count = data.filter(item => item.khunggio === khunggio).length;
+      if (count >= 8) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Khung giờ này đã đủ 8 người!',
+          confirmButtonColor: '#6a11cb'
+        });
+        return;
+      }
+
+      // Gửi dữ liệu
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ hoten, sodienthoai, mssv, thoigianduthi, khunggio })
+        });
+
+        if (response.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: 'Đăng ký thành công!',
+            confirmButtonColor: '#6a11cb'
+          }).then(() => {
+            return ;
+          });
+        } else {
+          throw new Error('Đăng ký thất bại');
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Đã có lỗi xảy ra, vui lòng thử lại!',
+          confirmButtonColor: '#6a11cb'
+        });
+      }
+    });
+  </script>
+
+  <script>
+  const KHUNG_GIO_LIST = [
+    "17h-17h30",
+    "17h30-18h",
+    "18h-18h30",
+    "18h30-19h",
+    "19h-19h30",
+    "19h30-20h",
+    "20h-20h30"
+  ];
+
+  async function getData() {
+    const res = await fetch(API_URL);
+    return await res.json();
+  }
+
+  // Render thống kê số lượng
+  function renderThongKe(counts) {
+    const tbody = document.getElementById("thongkeBody");
+    tbody.innerHTML = "";
+
+    KHUNG_GIO_LIST.forEach(kg => {
+      const soLuong = counts[kg] || 0;
+      const row = `
+        <tr>
+          <td class="border p-2">${kg}</td>
+          <td class="border p-2 ${soLuong >= 8 ? 'text-red-500 font-bold' : ''}">
+            ${soLuong}/8
+          </td>
+        </tr>
+      `;
+      tbody.innerHTML += row;
+    });
+  }
+
+  // Cập nhật trạng thái khung giờ + thống kê
+  async function updateKhungGioStatus() {
+    const data = await getData();
+    const khunggioSelect = document.getElementById("khunggio");
+
+    // Reset style trước
+    [...khunggioSelect.options].forEach(opt => {
+      opt.style.textDecoration = "none";
+      opt.style.color = "black";
+      opt.disabled = false;
+    });
+
+    // Đếm số lượng theo khung giờ
+    const counts = {};
+    data.forEach(item => {
+      counts[item.khunggio] = (counts[item.khunggio] || 0) + 1;
+    });
+
+    // Nếu khung giờ >= 8 thì gạch ngang + disable
+    [...khunggioSelect.options].forEach(opt => {
+      if (counts[opt.value] >= 8) {
+        opt.style.textDecoration = "line-through";
+        opt.style.color = "gray";
+        opt.disabled = true;
+      }
+    });
+
+    // Render thống kê
+    renderThongKe(counts);
+  }
+
+  document.addEventListener("DOMContentLoaded", updateKhungGioStatus);
+
+  document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const hoten = document.getElementById("hoten").value.trim();
+    const sodienthoai = document.getElementById("sodienthoai").value.trim();
+    const mssv = document.getElementById("mssv").value.trim();
+    const thoigianduthi = document.getElementById("thoigianduthi").value;
+    const khunggio = document.getElementById("khunggio").value;
+
+    const data = await getData();
+
+    // Kiểm tra MSSV trùng
+    if (data.some(item => item.mssv === mssv)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'MSSV đã tồn tại!',
+        confirmButtonColor: '#6a11cb'
+      });
+      return;
+    }
+
+    // Kiểm tra khung giờ đủ 8
+    const count = data.filter(item => item.khunggio === khunggio).length;
+    if (count >= 8) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Khung giờ này đã đủ 8 người!',
+        confirmButtonColor: '#6a11cb'
+      });
+      updateKhungGioStatus();
+      return;
+    }
+
+    // Gửi dữ liệu
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hoten, sodienthoai, mssv, thoigianduthi, khunggio })
+      });
+
+      if (response.ok) {
+        const registerBtn = document.querySelector("#registerForm button[type='submit']");
+        // Ẩn nút đăng ký
+        registerBtn.style.display = "none";
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công',
+          text: 'Đăng ký thành công!',
+          timer: 1000,           // tự tắt sau 3 giây
+          showConfirmButton: false, // không hiển thị nút OK
+          timerProgressBar: true
+        }).then(() => {
+          updateKhungGioStatus(); // cập nhật khung giờ và thống kê
+        });
+      } else {
+        throw new Error('Đăng ký thất bại');
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Đã có lỗi xảy ra, vui lòng thử lại!',
+        confirmButtonColor: '#6a11cb'
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

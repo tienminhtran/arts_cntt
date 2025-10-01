@@ -318,5 +318,69 @@
     "khunggio": "19h-19h30",
     "mssv": "25631241",
     "id": "45"
+  },
+  {
+    "hoten": "Đinh Bảo Ngọc",
+    "sodienthoai": "0978009274",
+    "thoigianduthi": "5",
+    "khunggio": "19h30-20h",
+    "mssv": "23646001",
+    "id": "46"
+  },
+  {
+    "hoten": "Lê Hiếu Nghĩa",
+    "sodienthoai": "0779543010",
+    "thoigianduthi": "4",
+    "khunggio": "19h30-20h",
+    "mssv": "25727211",
+    "id": "47"
+  },
+  {
+    "hoten": "Trịnh Tiến Khoa",
+    "sodienthoai": "0705919189",
+    "thoigianduthi": "8",
+    "khunggio": "19h30-20h",
+    "mssv": "23675811",
+    "id": "48"
+  },
+  {
+    "hoten": "Huỳnh Kim Đảm",
+    "sodienthoai": "0386125549",
+    "thoigianduthi": "4",
+    "khunggio": "19h30-20h",
+    "mssv": "22716751",
+    "id": "50"
+  },
+  {
+    "hoten": "Trần Anh Vũ",
+    "sodienthoai": "0912752311",
+    "thoigianduthi": "5",
+    "khunggio": "19h30-20h",
+    "mssv": "23677611",
+    "id": "51"
+  },
+  {
+    "hoten": "Võ Nguyễn Thùy An",
+    "sodienthoai": "0868754473",
+    "thoigianduthi": "4",
+    "khunggio": "19h30-20h",
+    "mssv": "25712901",
+    "id": "52"
+  },
+  {
+    "hoten": "Dương Đức Anh",
+    "sodienthoai": "0948041619",
+    "thoigianduthi": "4",
+    "khunggio": "20h-20h30",
+    "mssv": "25724821",
+    "id": "54"
+  },
+  {
+    "hoten": "Phạm Thị Kim Ngân",
+    "sodienthoai": "0816350320",
+    "thoigianduthi": "4",
+    "khunggio": "19h30-20h",
+    "mssv": "25688951",
+    "id": "55"
   }
 ]
