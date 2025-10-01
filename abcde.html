@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Thống kê đăng ký Văn Nghệ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+  <div class="max-w-7xl mx-auto bg-white shadow-lg rounded-xl p-6">
+    <h1 class="text-3xl font-bold text-center text-indigo-600 mb-6">Thống kê Đăng ký Văn Nghệ</h1>
+
+    <div class="mb-4 flex justify-between items-center">
+      <div>
+        <label class="mr-2 font-semibold">Lọc trạng thái:</label>
+        <select id="filterStatus" class="border rounded p-2">
+          <option value="">Tất cả</option>
+          <option value="0">Chưa hoàn tất</option>
+          <option value="1">Đã hoàn tất</option>
+        </select>
+      </div>
+      <div>
+        <button id="btnReload" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">
+          Tải lại
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full border-collapse text-sm">
+        <thead>
+          <tr class="bg-indigo-100 text-indigo-700">
+            <th class="border px-3 py-2">ID</th>
+            <th class="border px-3 py-2">Email</th>
+            <th class="border px-3 py-2">MSSV</th>
+            <th class="border px-3 py-2">Lớp</th>
+            <th class="border px-3 py-2">SĐT</th>
+            <th class="border px-3 py-2">Khoa</th>
+            <th class="border px-3 py-2">Thể loại</th>
+            <th class="border px-3 py-2">Họ tên</th>
+            <th class="border px-3 py-2">Thời gian dự thi</th>
+            <th class="border px-3 py-2">Khung giờ</th>
+            <th class="border px-3 py-2">Tên tiết mục</th>
+            <th class="border px-3 py-2">Thông tin bạn đồng hành</th>
+            <th class="border px-3 py-2">Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="13" class="text-center py-4">Đang tải dữ liệu...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://68dd11d77cd1948060ac464f.mockapi.io/vannghe";
+
+    async function fetchData() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Không lấy được dữ liệu");
+        const data = await res.json();
+        return data;
+      } catch (err) {
+        console.error(err);
+        return [];
+      }
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById("tableBody");
+      tbody.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="13" class="text-center py-4">Không có dữ liệu</td></tr>`;
+        return;
+      }
+
+      data.forEach(item => {
+        const statusText = item.trangthai == 1 ? "Đã hoàn tất" : "Chưa hoàn tất";
+        const row = `
+          <tr class="hover:bg-gray-50">
+            <td class="border px-3 py-2">${item.id}</td>
+            <td class="border px-3 py-2">${item.email || ""}</td>
+            <td class="border px-3 py-2">${item.mssv || ""}</td>
+            <td class="border px-3 py-2">${item.lop || ""}</td>
+            <td class="border px-3 py-2">${item.sodienthoai || ""}</td>
+            <td class="border px-3 py-2">${item.khoa || ""}</td>
+            <td class="border px-3 py-2">${item.theloai || ""}</td>
+            <td class="border px-3 py-2">${item.hoten || ""}</td>
+            <td class="border px-3 py-2">${item.thoigianduthi || ""}</td>
+            <td class="border px-3 py-2">${item.khunggio || ""}</td>
+            <td class="border px-3 py-2">${item.tentietmuc || ""}</td>
+            <td class="border px-3 py-2">${item.thongtinbandonghanh || "Không có"}</td>
+            <td class="border px-3 py-2">${statusText}</td>
+          </tr>`;
+        tbody.insertAdjacentHTML("beforeend", row);
+      });
+    }
+
+    async function loadAndRender() {
+      const allData = await fetchData();
+
+      const filterStatus = document.getElementById("filterStatus").value;
+      let filtered = allData;
+      if (filterStatus === "0" || filterStatus === "1") {
+        filtered = allData.filter(item => String(item.trangthai) === filterStatus);
+      }
+
+      renderTable(filtered);
+    }
+
+    document.getElementById("filterStatus").addEventListener("change", loadAndRender);
+    document.getElementById("btnReload").addEventListener("click", loadAndRender);
+
+    loadAndRender();
+  </script>
+</body>
+</html>
