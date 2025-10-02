@@ -4,23 +4,29 @@
   <meta charset="UTF-8">
   <title>Thống kê đăng ký Văn Nghệ</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Thư viện xuất Excel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen p-6">
   <div class="max-w-7xl mx-auto bg-white shadow-lg rounded-xl p-6">
     <h1 class="text-3xl font-bold text-center text-indigo-600 mb-6">Thống kê Đăng ký Văn Nghệ</h1>
 
-    <div class="mb-4 flex justify-between items-center">
-      <div>
-        <label class="mr-2 font-semibold">Lọc trạng thái:</label>
+    <div class="mb-4 flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center gap-2">
+        <label class="font-semibold">Trạng thái:</label>
         <select id="filterStatus" class="border rounded p-2">
           <option value="">Tất cả</option>
           <option value="0">Chưa hoàn tất</option>
           <option value="1">Đã hoàn tất</option>
         </select>
       </div>
-      <div>
+
+      <div class="flex items-center gap-2">
         <button id="btnReload" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">
           Tải lại
+        </button>
+        <button id="btnExport" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+          Xuất Excel
         </button>
       </div>
     </div>
@@ -53,13 +59,13 @@
 
   <script>
     const API_URL = "https://68dd11d77cd1948060ac464f.mockapi.io/vannghe";
+    let allData = [];
 
     async function fetchData() {
       try {
         const res = await fetch(API_URL);
         if (!res.ok) throw new Error("Không lấy được dữ liệu");
-        const data = await res.json();
-        return data;
+        return await res.json();
       } catch (err) {
         console.error(err);
         return [];
@@ -97,20 +103,46 @@
       });
     }
 
-    async function loadAndRender() {
-      const allData = await fetchData();
-
+    function filterData() {
       const filterStatus = document.getElementById("filterStatus").value;
-      let filtered = allData;
-      if (filterStatus === "0" || filterStatus === "1") {
-        filtered = allData.filter(item => String(item.trangthai) === filterStatus);
-      }
-
-      renderTable(filtered);
+      return allData.filter(item => {
+        if (filterStatus === "0" || filterStatus === "1") {
+          return String(item.trangthai) === filterStatus;
+        }
+        return true;
+      });
     }
 
-    document.getElementById("filterStatus").addEventListener("change", loadAndRender);
+    async function loadAndRender() {
+      allData = await fetchData();
+      renderTable(filterData());
+    }
+
+    document.getElementById("filterStatus").addEventListener("change", () => renderTable(filterData()));
     document.getElementById("btnReload").addEventListener("click", loadAndRender);
+
+    // Xuất Excel
+    document.getElementById("btnExport").addEventListener("click", () => {
+      const dataToExport = filterData().map(item => ({
+        ID: item.id,
+        Email: item.email || "",
+        MSSV: item.mssv || "",
+        Lop: item.lop || "",
+        SDT: item.sodienthoai || "",
+        Khoa: item.khoa || "",
+        TheLoai: item.theloai || "",
+        HoTen: item.hoten || "",
+        ThoiGianDuThi: item.thoigianduthi || "",
+        KhungGio: item.khunggio || "",
+        TenTietMuc: item.tentietmuc || "",
+        ThongTinBanDongHanh: item.thongtinbandonghanh || "",
+        TrangThai: item.trangthai == 1 ? "Đã hoàn tất" : "Chưa hoàn tất"
+      }));
+      const ws = XLSX.utils.json_to_sheet(dataToExport);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "DanhSach");
+      XLSX.writeFile(wb, "DanhSachVanNghe.xlsx");
+    });
 
     loadAndRender();
   </script>
