@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <title>Thống kê đăng ký Văn Nghệ</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Thư viện xuất Excel -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen p-6">
   <div class="max-w-7xl mx-auto bg-white shadow-lg rounded-xl p-6">
     <h1 class="text-3xl font-bold text-center text-indigo-600 mb-6">Thống kê Đăng ký Văn Nghệ</h1>
 
+    <!-- Bộ lọc -->
     <div class="mb-4 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-2">
         <label class="font-semibold">Trạng thái:</label>
@@ -18,6 +18,13 @@
           <option value="">Tất cả</option>
           <option value="0">Chưa hoàn tất</option>
           <option value="1">Đã hoàn tất</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <label class="font-semibold">Thể loại:</label>
+        <select id="filterTheLoai" class="border rounded p-2">
+          <option value="">Tất cả</option>
         </select>
       </div>
 
@@ -30,8 +37,23 @@
         </button>
       </div>
     </div>
-
+    <!-- Bảng thống kê theo thể loại -->
+    <h2 class="text-xl font-bold text-indigo-600 mb-2">Thống kê theo Thể loại</h2>
     <div class="overflow-x-auto">
+      <table class="min-w-full border-collapse text-sm">
+        <thead>
+          <tr class="bg-green-100 text-green-700">
+            <th class="border px-3 py-2">Thể loại</th>
+            <th class="border px-3 py-2">Số lượng</th>
+          </tr>
+        </thead>
+        <tbody id="statsBody">
+          <tr><td colspan="2" class="text-center py-4">Chưa có dữ liệu</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Bảng chi tiết -->
+    <div class="overflow-x-auto mb-6">
       <table class="min-w-full border-collapse text-sm">
         <thead>
           <tr class="bg-indigo-100 text-indigo-700">
@@ -55,6 +77,8 @@
         </tbody>
       </table>
     </div>
+
+
   </div>
 
   <script>
@@ -103,25 +127,75 @@
       });
     }
 
+    function renderStats(data) {
+      const tbody = document.getElementById("statsBody");
+      tbody.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="2" class="text-center py-4">Không có dữ liệu</td></tr>`;
+        return;
+      }
+
+      const counts = {};
+      data.forEach(item => {
+        const tl = item.theloai || "Khác";
+        counts[tl] = (counts[tl] || 0) + 1;
+      });
+
+      Object.entries(counts).forEach(([theloai, count]) => {
+        const row = `
+          <tr>
+            <td class="border px-3 py-2">${theloai}</td>
+            <td class="border px-3 py-2 text-center">${count}</td>
+          </tr>`;
+        tbody.insertAdjacentHTML("beforeend", row);
+      });
+    }
+
     function filterData() {
       const filterStatus = document.getElementById("filterStatus").value;
+      const filterTheLoai = document.getElementById("filterTheLoai").value;
+
       return allData.filter(item => {
+        let match = true;
         if (filterStatus === "0" || filterStatus === "1") {
-          return String(item.trangthai) === filterStatus;
+          match = match && String(item.trangthai) === filterStatus;
         }
-        return true;
+        if (filterTheLoai) {
+          match = match && item.theloai === filterTheLoai;
+        }
+        return match;
       });
     }
 
     async function loadAndRender() {
       allData = await fetchData();
-      renderTable(filterData());
+
+      // Tạo danh sách thể loại cho combobox
+      const uniqueTheLoai = [...new Set(allData.map(i => i.theloai).filter(Boolean))];
+      const select = document.getElementById("filterTheLoai");
+      select.innerHTML = `<option value="">Tất cả</option>`;
+      uniqueTheLoai.forEach(tl => {
+        select.insertAdjacentHTML("beforeend", `<option value="${tl}">${tl}</option>`);
+      });
+
+      const filtered = filterData();
+      renderTable(filtered);
+      renderStats(filtered);
     }
 
-    document.getElementById("filterStatus").addEventListener("change", () => renderTable(filterData()));
+    document.getElementById("filterStatus").addEventListener("change", () => {
+      const filtered = filterData();
+      renderTable(filtered);
+      renderStats(filtered);
+    });
+    document.getElementById("filterTheLoai").addEventListener("change", () => {
+      const filtered = filterData();
+      renderTable(filtered);
+      renderStats(filtered);
+    });
     document.getElementById("btnReload").addEventListener("click", loadAndRender);
 
-    // Xuất Excel
     document.getElementById("btnExport").addEventListener("click", () => {
       const dataToExport = filterData().map(item => ({
         ID: item.id,
