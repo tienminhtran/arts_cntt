@@ -1,154 +1,133 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Tra cứu CNTT</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cảm ơn — Đã đăng ký</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 min-h-screen flex items-center justify-center">
 
-  <div class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-3xl">
-    <h1 class="text-3xl font-bold text-center text-purple-700 mb-6">Tra cứu thông tin Văn Nghệ 2025</h1>
-
-    <!-- Form tìm kiếm -->
-    <form id="searchForm" class="flex gap-2 mb-6">
-      <input id="mssvInput" type="text" placeholder="Nhập MSSV..." 
-             class="flex-1 border rounded-xl p-3 focus:ring focus:ring-purple-300 shadow-sm">
-      <button type="submit" class="bg-purple-600 text-white px-5 py-3 rounded-xl hover:bg-purple-700 font-semibold shadow">
-        Tra cứu
-      </button>
-    </form>
-
-    <!-- Kết quả -->
-    <div id="result" class="space-y-4"></div>
-  </div>
-
-  <script>
-    const API_URL = "https://68dd11d77cd1948060ac464f.mockapi.io/vannghe"; 
-    let currentSV = null;
-
-    // Hàm hiển thị thông tin
-    function renderInfo(sv) {
-      const container = document.getElementById("result");
-      if (!sv) {
-        container.innerHTML = `<p class="text-red-600 font-semibold text-center">Không tìm thấy MSSV.</p>`;
-        return;
-      }
-
-      let infoHTML = `
-        <div class="border rounded-xl p-6 bg-gray-50 shadow">
-          <h2 class="text-xl font-bold mb-3 text-purple-700">Thông tin sinh viên</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            ${Object.entries(sv).map(([k,v]) => `
-              <div class="p-3 border rounded-lg bg-white shadow-sm">
-                <span class="font-semibold capitalize text-gray-700">${k}:</span><br>
-                ${v === "" 
-                  ? `<span class="text-red-500 font-semibold">Chưa có</span>` 
-                  : `<span class="text-gray-900">${v}</span>`}
-              </div>
-            `).join("")}
-          </div>
-          <p class="mt-3">Trạng thái: 
-            ${sv.trangthai == 1 
-              ? `<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-sm font-medium">Đã hoàn tất</span>`
-              : `<span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-lg text-sm font-medium">Chưa hoàn tất</span>`}
-          </p>
-        </div>
-      `;
-
-      // Nếu trạng thái = 0 thì hiển thị form cập nhật
-      if (sv.trangthai == 0) {
-        infoHTML += `
-          <form id="updateForm" class="mt-6 space-y-4 p-6 border rounded-xl bg-white shadow">
-            <h3 class="font-semibold text-purple-700 text-lg mb-3">Cập nhật thông tin còn thiếu</h3>
-            ${Object.keys(sv).filter(k => !["id","mssv","trangthai"].includes(k)).map(key => {
-              // ✅ Nếu khunggio rỗng -> disable không cho nhập
-              if (key === "khunggio" && !sv[key]) {
-                return `
-                  <div>
-                    <label class="block text-sm font-medium capitalize text-gray-600">${key}</label>
-                    <input name="${key}" value="" 
-                           readonly disabled
-                           class="w-full border p-3 rounded-lg bg-gray-200 text-gray-400 shadow-sm" />
-                    <p class="text-xs text-gray-500 italic">Không được phép cập nhật khung giờ.</p>
-                  </div>`;
-              }
-              return `
-                <div>
-                  <label class="block text-sm font-medium capitalize text-gray-600">${key}</label>
-                  <input name="${key}" 
-                         value="${sv[key] || ""}" 
-                         ${sv[key] 
-                            ? "readonly class='w-full border p-3 rounded-lg bg-gray-100 text-gray-500 shadow-sm'" 
-                            : "class='w-full border p-3 rounded-lg bg-yellow-50 border-yellow-400 shadow-sm focus:ring focus:ring-yellow-300' placeholder='Nhập thông tin...' "}
-                  />
-                </div>`;
-            }).join("")}
-            <button type="submit" class="w-full bg-green-600 text-white px-5 py-3 rounded-xl hover:bg-green-700 font-semibold shadow">
-              Lưu thông tin
-            </button>
-          </form>
-        `;
-      }
-
-      container.innerHTML = infoHTML;
+  <style>
+    body { font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    /* Confetti pieces */
+    .confetti {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .confetti span {
+      position: absolute;
+      display: block;
+      border-radius: 2px;
+      opacity: 0.9;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0.85; }
     }
 
-    // Sự kiện tìm kiếm
-    document.getElementById("searchForm").onsubmit = async (e) => {
-      e.preventDefault();
-      const mssv = document.getElementById("mssvInput").value.trim();
-      if (!mssv) return alert("Vui lòng nhập MSSV!");
+    /* subtle spotlight */
+    .spot {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle at center, rgba(99,102,241,0.25), transparent 50%);
+      filter: blur(80px);
+      left: 50%;
+      transform: translateX(-50%);
+      top: 6rem;
+      z-index: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-indigo-100 via-white to-pink-100 relative flex items-center justify-center p-6">
 
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        const sv = data.find(x => x.mssv == mssv);
-        currentSV = sv || null;
-        renderInfo(currentSV);
-      } catch (err) {
-        console.error(err);
-        alert("Lỗi khi gọi API!");
-      }
-    };
+  <div class="confetti" aria-hidden="true" id="confetti"></div>
+  <div class="spot"></div>
 
-    // Xử lý submit updateForm
-    document.addEventListener("submit", async (e) => {
-      if (e.target && e.target.id === "updateForm") {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        let updated = { ...currentSV };
+  <main class="relative z-10 w-full max-w-3xl">
+    <section class="bg-white/95 backdrop-blur-md border border-gray-100 rounded-2xl shadow-2xl p-8 md:p-12">
+      <div class="flex items-center gap-4">
+        <div class="flex-none w-16 h-16 rounded-full bg-indigo-600/10 flex items-center justify-center shadow-inner">
+          <svg class="w-10 h-10 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 20l9-5-9-5-9 5 9 5z"></path>
+            <path d="M12 12v8"></path>
+            <path d="M12 12L3 7"></path>
+            <path d="M12 12l9-5"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-700">🎉 Cảm ơn bạn đã đăng ký! 🎉</h1>
+          <p class="mt-2 text-base text-gray-600">Rất vui được gặp bạn tại chương trình.</p>
+        </div>
+      </div>
 
-        formData.forEach((val, key) => {
-          // Nếu là khunggio và ban đầu rỗng => bỏ qua không cập nhật
-          if (key === "khunggio" && !currentSV[key]) {
-            updated[key] = ""; 
-          } else {
-            updated[key] = val;
-          }
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-6 rounded-xl bg-indigo-50 border border-indigo-100 shadow-sm">
+          <h3 class="text-sm text-indigo-700 font-semibold">📌 Thông tin buổi thi</h3>
+          <p class="mt-3 text-gray-700 leading-relaxed">
+            <span class="font-medium">⏰ Thời gian:</span> <span class="text-indigo-600">17:00</span><br>
+            <span class="font-medium">📅 Ngày:</span> <span class="text-indigo-600">3/10</span><br>
+            <span class="font-medium">📍 Địa điểm:</span> <span class="text-indigo-600">Hội trường E7</span>
+          </p>
+        </div>
+
+        <div class="p-6 rounded-xl bg-rose-50 border border-rose-100 shadow-sm">
+          <h3 class="text-sm text-rose-700 font-semibold">⚠️ Lưu ý</h3>
+          <ul class="mt-3 text-gray-700 list-disc ml-5 space-y-1">
+            <li>Đến sớm 10–15 phút để ổn định chỗ ngồi.</li>
+            <li>Mang theo thẻ sinh viên hoặc giấy tờ tùy thân.</li>
+            <li>Liên hệ BTC nếu cần hỗ trợ — <span class="font-medium">0869188704 (zalo)</span>.</li>
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="mt-10 text-center">
+        <p class="text-lg text-gray-700 font-medium">✨ Hẹn gặp bạn tại chương trình — chúc bạn có một tiết mục thật rực rỡ và đáng nhớ! ✨</p>
+      </div>
+    </section>
+
+    <footer class="mt-6 text-center text-sm text-gray-500">
+      © <span id="year"></span> Ban tổ chức — Hội nghị Văn Nghệ • <b>Khoa Công nghệ Thông tin - Khoa Ngoại ngữ</b>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Confetti generator loop
+    const colors = ['#EF4444','#F97316','#F59E0B','#10B981','#3B82F6','#8B5CF6','#EC4899'];
+    const confettiContainer = document.getElementById('confetti');
+
+    function spawnConfetti(count = 30) {
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('span');
+        el.style.left = Math.random() * 100 + '%';
+        el.style.top = (-10 - Math.random() * 10) + 'vh';
+        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+        el.style.width = (6 + Math.random() * 12) + 'px';
+        el.style.height = (8 + Math.random() * 18) + 'px';
+        el.style.animationDuration = (6 + Math.random() * 6) + 's';
+        el.style.animationDelay = (Math.random() * 3) + 's';
+        confettiContainer.appendChild(el);
+
+        // remove after it falls, then respawn
+        el.addEventListener('animationend', () => {
+          el.remove();
+          spawnConfetti(1);
         });
-
-        updated.trangthai = 1;
-
-        try {
-          const res = await fetch(`${API_URL}/${currentSV.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updated)
-          });
-
-          if (res.ok) {
-            alert("Cập nhật thành công!");
-            currentSV = updated;
-            renderInfo(updated);
-          } else {
-            alert("Cập nhật thất bại!");
-          }
-        } catch (err) {
-          alert("Lỗi khi cập nhật!");
-        }
       }
-    });
+    }
+
+    // continuous confetti
+    spawnConfetti(40);
   </script>
 </body>
 </html>
